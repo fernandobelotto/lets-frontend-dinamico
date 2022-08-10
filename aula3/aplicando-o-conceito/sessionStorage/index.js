@@ -1,25 +1,25 @@
 const form = document.getElementsByTagName("form")[0];
 
 
-window.onload = function() {
+window.onload = () => {
+  console.log('teste');
 
-  const items = window.localStorage.getItem('lista')
+  const ul = document.getElementById("lista-tarefas");
 
-  if(items) {
-    const ul = document.getElementById("lista-tarefas")
-    ul.innerHTML = items
+  const data = sessionStorage.getItem('items');
+  if (data) {
+    ul.innerHTML = data
   }
 
-  const buttons = document.getElementsByTagName('button')
-  for (let button of buttons) {
-    button.onclick = deletar
-  }
+  const items = document.getElementsByTagName('li')
 
+  for(let i of items) {
+    i.onclick = deletar
+  }
 }
 
-
 form.addEventListener("submit", (event) => {
-  event.preventDefault();
+  event.preventDefault()
 
   const data = serializeForm();
 
@@ -34,7 +34,7 @@ form.addEventListener("submit", (event) => {
   const deleteButton = document.createElement("button");
 
   deleteButton.innerText = "Remover";
-  deleteButton.className = "bg-red-700 ml-5 p-2 rounded-md text-white shadow-lg";
+  deleteButton.className = "bg-red-700 p-2 rounded-md text-white shadow-lg";
 
   const meuIdCriado = (Math.random() * 10000).toFixed().toString();
 
@@ -47,15 +47,13 @@ form.addEventListener("submit", (event) => {
 
   ul.appendChild(li);
 
-  window.localStorage.setItem('lista', ul.innerHTML)
+  window.sessionStorage.setItem('items', ul.innerHTML)
 });
 
 function deletar(event) {
   document.getElementById(event.target.value).remove();
-
   const ul = document.getElementById("lista-tarefas");
-
-  window.localStorage.setItem('lista', ul.innerHTML)
+  window.sessionStorage.setItem('items', ul.innerHTML)
 }
 
 function serializeForm() {
