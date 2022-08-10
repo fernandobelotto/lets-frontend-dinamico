@@ -1,29 +1,45 @@
-const getProduto = (id) => {
-  return new Promise((resolve) => setTimeout(() => resolve({ id }), 200));
-};
+const success = fetch(
+  "https://mdn.github.io/learning-area/javascript/apis/fetching-data/can-store/products.json"
+);
+const failed = fetch(
+  "https://mdn.github.io/learning-area/javascript/apis/fetching-data/can-store/not-found"
+);
+const success2 = fetch(
+  "https://mdn.github.io/learning-area/javascript/apis/fetching-data/can-store/products.json"
+);
 
-const listDeIds = [1, 2, 3, 4, 5, 6];
+const success_all = fetch(
+    "https://mdn.github.io/learning-area/javascript/apis/fetching-data/can-store/products.json"
+  );
+  const failed_all = fetch(
+    "https://mdn.github.io/learning-area/javascript/apis/fetching-data/can-store/not-found"
+  );
+  const success2_all = fetch(
+    "https://mdn.github.io/learning-area/javascript/apis/fetching-data/can-store/products.json"
+  );
+  
+
+const promises = [success, failed, success2];
+const promises_all = [success_all, failed_all, success2_all];
 
 async function porLoop() {
-  console.time("loop");
-  const produtos = [];
-
-  for (let i of listDeIds) {
-    const produto = await getProduto(i);
-    produtos.push(produto);
+  const responses = [];
+  for (let promise of promises) {
+    const res = await promise;
+    responses.push(res);
   }
-  console.timeEnd("loop");
-  console.log("loop finalizado");
+  return responses;
 }
 
 async function porPromiseAll() {
-  console.time(".all");
-  const promises = listDeIds.map((id) => getProduto(id));
-  const produtos = await Promise.all(promises);
-
-  console.timeEnd(".all");
-  console.log(".all finalizado");
+  const res = await Promise.all(promises_all);
+  return res;
 }
 
-porLoop();
-porPromiseAll();
+porLoop()
+.then(res => console.log('then loop', res))
+.catch(err => console.log('catch loop', err))
+
+porPromiseAll()
+    .then(res => console.log('then promisseAll', res))
+    .catch(error => console.log('catch promisseall', error))
